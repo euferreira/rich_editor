@@ -42,7 +42,6 @@ class RichEditorState extends State<RichEditor> {
   @override
   void initState() {
     super.initState();
-    
     if (!kIsWeb && Platform.isIOS) {
       _initServer();
     }
@@ -55,7 +54,8 @@ class RichEditorState extends State<RichEditor> {
 
   void _handleRequest(HttpRequest request) {
     try {
-      if (request.method == 'GET' && request.uri.queryParameters['query'] == "getRawTeXHTML") {
+      if (request.method == 'GET' &&
+          request.uri.queryParameters['query'] == "getRawTeXHTML") {
       } else {}
     } catch (e) {
       print('Exception in handleRequest: $e');
@@ -69,7 +69,7 @@ class RichEditorState extends State<RichEditor> {
     }
     if (!kIsWeb && !Platform.isAndroid) {
       if (localServer != null) {
-        localServer!.close();
+        localServer?.close();
       }
     }
     super.dispose();
@@ -95,6 +95,10 @@ class RichEditorState extends State<RichEditor> {
         Expanded(
           child: InAppWebView(
             key: _mapKey,
+            initialOptions: InAppWebViewGroupOptions(
+                crossPlatform: InAppWebViewOptions(
+              supportZoom: false,
+            )),
             onWebViewCreated: (controller) async {
               _controller = controller;
               setState(() {});
@@ -150,18 +154,18 @@ class RichEditorState extends State<RichEditor> {
 
   _setInitialValues() async {
     if (widget.value != null) await javascriptExecutor.setHtml(widget.value!);
-    if (widget.editorOptions!.padding != null)
+    if (widget.editorOptions?.padding != null)
       await javascriptExecutor.setPadding(widget.editorOptions!.padding!);
-    if (widget.editorOptions!.backgroundColor != null)
+    if (widget.editorOptions?.backgroundColor != null) 
       await javascriptExecutor
           .setBackgroundColor(widget.editorOptions!.backgroundColor!);
-    if (widget.editorOptions!.baseTextColor != null)
+    if (widget.editorOptions?.baseTextColor != null)
       await javascriptExecutor
           .setBaseTextColor(widget.editorOptions!.baseTextColor!);
-    if (widget.editorOptions!.placeholder != null)
+    if (widget.editorOptions?.placeholder != null)
       await javascriptExecutor
           .setPlaceholder(widget.editorOptions!.placeholder!);
-    if (widget.editorOptions!.baseFontFamily != null)
+    if (widget.editorOptions?.baseFontFamily != null)
       await javascriptExecutor
           .setBaseFontFamily(widget.editorOptions!.baseFontFamily!);
   }
